@@ -3,7 +3,7 @@ export default class Filter {
    * @property {HTMLElement} pagination
    * @property {HTMLElement} content
    * @property {HTMLElement} sorting
-   * @property {HTMLElement} form
+   * @property {HTMLFormElement} form
    */
 
   /**
@@ -30,10 +30,26 @@ export default class Filter {
         this.loadUrl(e.target.getAttribute('href'))
       }
     })
+    this.form.querySelectorAll('input').forEach((input) => {
+      input.addEventListener('change', this.loadForm.bind(this))
+    })
+  }
+
+  async loadForm() {
+    const data = new FormData(this.form)
+    const url = new URL(
+      this.form.getAttribute('action') || window.location.href,
+    )
+    const params = new URLSearchParams()
+    data.forEach((value, key) => {
+      params.append(key, value)
+    })
+    return this.loadUrl(url.pathname + '?' + params.toString())
   }
 
   async loadUrl(url) {
-    const response = await fetch(url, {
+    const ajaxUrl = url + '&ajax=1'
+    const response = await fetch(ajaxUrl, {
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
       },

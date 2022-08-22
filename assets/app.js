@@ -42,4 +42,7 @@ if (slider) {
       max.value = Math.round(values[1])
     }
   })
+  range.on('end', function (values, handle) {
+    min.dispatchEvent(new Event('change'))
+  })
 }
