@@ -24,12 +24,14 @@ export default class Filter {
    * Ajoute les comportements aux différents éléments
    */
   bindEvents() {
-    this.sorting.addEventListener('click', (e) => {
+    const aClickListener = (e) => {
       if (e.target.tagName === 'A') {
         e.preventDefault()
         this.loadUrl(e.target.getAttribute('href'))
       }
-    })
+    }
+    this.sorting.addEventListener('click', aClickListener)
+    this.pagination.addEventListener('click', aClickListener)
     this.form.querySelectorAll('input').forEach((input) => {
       input.addEventListener('change', this.loadForm.bind(this))
     })
@@ -58,6 +60,7 @@ export default class Filter {
       const data = await response.json()
       this.content.innerHTML = data.content
       this.sorting.innerHTML = data.sorting
+      this.pagination.innerHTML = data.pagination
       history.replaceState({}, '', url)
     } else {
       console.error(response)
