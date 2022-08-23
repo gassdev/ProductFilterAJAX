@@ -44,6 +44,12 @@ class ProductController extends AbstractController
                         'products' => $products,
                     ]
                 ),
+                'pages' => ceil(
+                    $products->getTotalItemCount() /
+                        $products->getItemNumberPerPage()
+                ),
+                'min' => $min,
+                'max' => $max,
             ]);
         }
 
